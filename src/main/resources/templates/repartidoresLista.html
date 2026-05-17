@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Repartidores</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2>Repartidores</h2>
+        <a href="/repartidores/nuevoRepartidor" class="btn btn-primary mb-3">+ Nuevo Repartidor</a>
+
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Zona</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${repartidores}">
+                    <td th:text="${r.id}"></td>
+                    <td th:text="${r.nombre}"></td>
+                    <td th:text="${r.zona}"></td>
+                    <td>
+                        <a th:href="@{/repartidores/editarRepartidor/{id}(id=${r.id})}"
+                            class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/repartidores/borrarRepartidor/{id}(id=${r.id})}" class="btn btn-sm btn-danger"
+                            onclick="return confirm('¿Seguro que quieres eliminar este repartidor?')">
+                            Borrar
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${#lists.isEmpty(repartidores)}" class="alert alert-info">
+            No hay repartidores registrados.
+        </div>
+    </div>
+</body>
+
+</html>
