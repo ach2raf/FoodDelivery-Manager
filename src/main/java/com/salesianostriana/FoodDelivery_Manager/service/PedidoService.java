@@ -18,4 +18,12 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
+     public Pedido findById(Long id){
+        return  pedidoRepository.findById(id)
+        .orElseThrow(()->new RuntimeException("Pedido no encontrado con id: "+id));
+    }
+
+
+
+
 }
