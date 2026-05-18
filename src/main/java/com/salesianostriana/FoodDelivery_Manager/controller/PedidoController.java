@@ -57,6 +57,13 @@ public class PedidoController {
         return "pedidoLista";
     }
 
+     @GetMapping("/borrarPedido/{id}")
+    public String borrar(@PathVariable Long id){
+        pedidoService.deleteById(id);
+        return "redirect:/pedidos";
+    }
+
+
 
 
 }
