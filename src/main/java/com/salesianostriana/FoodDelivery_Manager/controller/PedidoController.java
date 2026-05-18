@@ -51,5 +51,12 @@ public class PedidoController {
         return "pedidoFormulario";
     }
 
+      @GetMapping
+    public String listarPedidos(Model model){
+        model.addAttribute("pedidos", pedidoService.findAll());
+        return "pedidoLista";
+    }
+
+
 
 }
