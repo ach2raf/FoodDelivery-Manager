@@ -21,49 +21,48 @@ import lombok.AllArgsConstructor;
 
 public class PedidoController {
 
-        private final PedidoService pedidoService;
+    private final PedidoService pedidoService;
 
-     @GetMapping("/nuevoPedido")
-    public String nuevo(Model model){
-
+    @GetMapping("/nuevoPedido")
+    public String nuevo(Model model) {
 
         model.addAttribute("pedido", new Pedido());
         return "pedidoFormulario";
     }
 
-     @PostMapping("/guardarPedido")
-    public String guardar(@Valid @ModelAttribute Pedido pedido, BindingResult result){
+    @PostMapping("/guardarPedido")
+    public String guardar(@Valid @ModelAttribute Pedido pedido, BindingResult result) {
 
-
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "pedidoFormulario";
         }
         pedidoService.save(pedido);
         return "redirect:/pedidos";
     }
 
-
-     @GetMapping("/editarPedido/{id}")
-    public String editar(@PathVariable Long id, Model model){
-
+    @GetMapping("/editarPedido/{id}")
+    public String editar(@PathVariable Long id, Model model) {
 
         model.addAttribute("pedido", pedidoService.findById(id));
         return "pedidoFormulario";
     }
 
-      @GetMapping
-    public String listarPedidos(Model model){
+    @GetMapping
+    public String listarPedidos(Model model) {
         model.addAttribute("pedidos", pedidoService.findAll());
         return "pedidoLista";
     }
 
-     @GetMapping("/borrarPedido/{id}")
-    public String borrar(@PathVariable Long id){
+    @GetMapping("/borrarPedido/{id}")
+    public String borrar(@PathVariable Long id) {
         pedidoService.deleteById(id);
         return "redirect:/pedidos";
     }
 
-
-
+    @GetMapping("/verPedido/{id}")
+    public String ver(@PathVariable Long id, Model model) {
+        model.addAttribute("pedido", pedidoService.findById(id));
+        return "verPedido";
+    }
 
 }
