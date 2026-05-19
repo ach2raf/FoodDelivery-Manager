@@ -63,6 +63,19 @@ public String editar(@PathVariable Long id, Model model) {
     return "repartidoresLista";
    }
 
+   @GetMapping("/borrarRepartidor/{id}")
+public String borrar(@PathVariable Long id) {
+
+    Optional<Repartidor> repartidor = repartidorService.findById(id);
+
+    if (repartidor.isPresent()) {
+        repartidorService.deleteById(id);
+    } else {
+        return "redirect:/repartidores?error=true";
+    }
+
+    return "redirect:/repartidores";
+}
 
 
 }
