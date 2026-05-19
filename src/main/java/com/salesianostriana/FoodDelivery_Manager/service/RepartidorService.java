@@ -32,6 +32,10 @@ public class RepartidorService extends BaseServiceImpl<Repartidor, Long, Reparti
         return repartidorRepository.findAll();
     }
  
+    /*public void deleteById(Long id) {
+        repartidorRepository.deleteById(id);
+    }*/
+
 
 
 }
