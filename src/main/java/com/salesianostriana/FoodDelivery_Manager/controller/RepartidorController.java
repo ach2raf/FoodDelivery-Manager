@@ -55,5 +55,14 @@ public String editar(@PathVariable Long id, Model model) {
     }
 }
 
+@GetMapping
+   public String listaRepartidores(Model model){
+
+
+    model.addAttribute("repartidores", repartidorService.findAll());
+    return "repartidoresLista";
+   }
+
+
 
 }
