@@ -1,10 +1,13 @@
 package com.salesianostriana.FoodDelivery_Manager.controller;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,5 +41,19 @@ public class RepartidorController {
     repartidorService.save(repartidor);
     return "redirect:/repartidores";
    }
+
+   @GetMapping("/editarRepartidor/{id}")
+public String editar(@PathVariable Long id, Model model) {
+
+    Optional<Repartidor>repartidor=repartidorService.findById(id);
+
+    if (repartidor.isPresent()) {
+        model.addAttribute("repartidor", repartidor.get());
+        return "repartidorFormulario";
+    } else {
+        return "redirect:/repartidores";
+    }
+}
+
 
 }
