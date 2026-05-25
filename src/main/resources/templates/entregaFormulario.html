@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Entrega</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4" style="max-width: 500px;">
+    <h2>Nueva Entrega</h2>
+
+    <form th:action="@{/entregas/nuevaEntrega/submit}"
+          th:object="${entrega}" method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input type="text" th:field="*{direccion}"
+                   class="form-control form-control-sm"
+                   th:classappend="${#fields.hasErrors('direccion')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{direccion}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="datetime-local" th:field="*{fecha}"
+                   class="form-control form-control-sm"
+                   th:classappend="${#fields.hasErrors('fecha')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{fecha}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tiempo (minutos)</label>
+            <input type="number" th:field="*{tiempo}"
+                   class="form-control form-control-sm"
+                   th:classappend="${#fields.hasErrors('tiempo')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{tiempo}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Repartidor</label>
+            <select th:field="*{repartidor.id}"
+                    class="form-select form-select-sm">
+                <option value="">-- Selecciona repartidor --</option>
+                <option th:each="r : ${repartidores}"
+                        th:value="${r.id}"
+                        th:text="${r.nombre} + ' - ' + ${r.zona}">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-sm btn-success">Guardar</button>
+        <a href="/entregas" class="btn btn-sm btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>
