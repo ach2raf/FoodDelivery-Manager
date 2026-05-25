@@ -42,4 +42,10 @@ public class EntregaController {
         return "redirect:/entregas";
     }
 
+     @GetMapping
+    public String listar(Model model) {
+        model.addAttribute("entregas", entregaService.findAll());
+        return "entregasLista";
+    }
+
 }
