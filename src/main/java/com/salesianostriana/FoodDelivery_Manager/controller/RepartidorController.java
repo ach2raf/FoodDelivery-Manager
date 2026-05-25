@@ -77,5 +77,18 @@ public String borrar(@PathVariable Long id) {
     return "redirect:/repartidores";
 }
 
+ @GetMapping("/verRepartidor/{id}")
+public String ver(@PathVariable Long id, Model model) {
+
+    Optional<Repartidor> repartidor = repartidorService.findById(id);
+
+    if (repartidor.isPresent()) {
+        model.addAttribute("repartidor", repartidor.get());
+        return "verRepartidor";
+    } else {
+        return "redirect:/repartidores?error=true";
+    }
+}
+
 
 }
