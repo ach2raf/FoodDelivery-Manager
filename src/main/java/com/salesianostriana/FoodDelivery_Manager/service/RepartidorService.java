@@ -1,6 +1,7 @@
 package com.salesianostriana.FoodDelivery_Manager.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -17,24 +18,28 @@ public class RepartidorService extends BaseServiceImpl<Repartidor, Long, Reparti
 
         private final RepartidorRepository repartidorRepository;
 
+        @Override
          public Repartidor save(Repartidor repartidor) {
         return repartidorRepository.save(repartidor);
     }
 
-    /*  public Repartidor findById(Long id) {
-        return repartidorRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Repartidor no encontrado con id: " + id));
-    }*/
+        @Override
+    public Optional<Repartidor> findById(Long id) {
+        return repartidorRepository.findById(id);
+    }
+
 
        
 
+        @Override
    public List<Repartidor> findAll() {
         return repartidorRepository.findAll();
     }
  
-    /*public void deleteById(Long id) {
+        @Override
+    public void deleteById(Long id) {
         repartidorRepository.deleteById(id);
-    }*/
+    }
 
 
 
