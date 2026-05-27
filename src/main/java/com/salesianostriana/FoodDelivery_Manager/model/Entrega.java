@@ -1,7 +1,9 @@
 package com.salesianostriana.FoodDelivery_Manager.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,5 +41,6 @@ public class Entrega {
     @JoinColumn(name = "repartidor_id")
     private Repartidor repartidor;
 
-   
+   @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
+    private List<EntregaPedido> entregaPedidos;
 }
