@@ -1,10 +1,13 @@
 package com.salesianostriana.FoodDelivery_Manager.controller;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -46,6 +49,17 @@ public class EntregaController {
     public String listar(Model model) {
         model.addAttribute("entregas", entregaService.findAll());
         return "entregasLista";
+    }
+
+    @GetMapping("/editarEntrega/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Optional<Entrega> entrega = entregaService.findById(id);
+        if (entrega.isPresent()) {
+            model.addAttribute("entrega", entrega.get());
+            model.addAttribute("repartidores", repartidorService.findAll());
+            return "entregaFormulario";
+        }
+        return "redirect:/entregas?error=true";
     }
 
 }
