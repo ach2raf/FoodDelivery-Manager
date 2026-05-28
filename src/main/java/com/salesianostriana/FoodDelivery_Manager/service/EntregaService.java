@@ -1,6 +1,7 @@
 package com.salesianostriana.FoodDelivery_Manager.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,9 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
 
     public List<Entrega> findAll() {
         return entregaRepository.findAll();
+    }
+
+    public Optional<Entrega> findById(Long id) {
+        return entregaRepository.findById(id);
     }
 }
