@@ -72,8 +72,14 @@ public class PedidoController {
 
     @GetMapping("/verPedido/{id}")
     public String ver(@PathVariable Long id, Model model) {
-        model.addAttribute("pedido", pedidoService.findById(id));
+        Optional<Pedido> pedido=pedidoService.findById(id);
+
+        if(pedido.isPresent()){
+        model.addAttribute("pedido", pedido.get());
         return "verPedido";
+        }else{
+            return "redirect:/pedidos?error=true";
+        }
     }
 
 }
