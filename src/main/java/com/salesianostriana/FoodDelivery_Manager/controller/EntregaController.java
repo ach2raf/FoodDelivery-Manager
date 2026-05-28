@@ -62,4 +62,15 @@ public class EntregaController {
         return "redirect:/entregas?error=true";
     }
 
+    @GetMapping("/borrarEntrega/{id}")
+    public String borrar(@PathVariable Long id) {
+        Optional<Entrega> entrega = entregaService.findById(id);
+        if (entrega.isPresent()) {
+            entregaService.deleteById(id);
+        } else {
+            return "redirect:/entregas?error=true";
+        }
+        return "redirect:/entregas";
+    }
+
 }
