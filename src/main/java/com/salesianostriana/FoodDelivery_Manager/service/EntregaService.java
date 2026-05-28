@@ -28,4 +28,8 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     public Optional<Entrega> findById(Long id) {
         return entregaRepository.findById(id);
     }
+
+    public void deleteById(Long id) {
+        entregaRepository.deleteById(id);
+    }
 }
