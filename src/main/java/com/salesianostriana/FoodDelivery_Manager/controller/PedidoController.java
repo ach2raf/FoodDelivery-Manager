@@ -1,5 +1,7 @@
 package com.salesianostriana.FoodDelivery_Manager.controller;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +32,7 @@ public class PedidoController {
         return "pedidoFormulario";
     }
 
-    @PostMapping("/guardarPedido")
+    @PostMapping("/nuevoPedido/submit")
     public String guardar(@Valid @ModelAttribute Pedido pedido, BindingResult result) {
 
         if (result.hasErrors()) {
@@ -42,9 +44,12 @@ public class PedidoController {
 
     @GetMapping("/editarPedido/{id}")
     public String editar(@PathVariable Long id, Model model) {
-
-        model.addAttribute("pedido", pedidoService.findById(id));
-        return "pedidoFormulario";
+        Optional<Pedido> pedido = pedidoService.findById(id);
+        if (pedido.isPresent()) {
+            model.addAttribute("pedido", pedido.get());
+            return "pedidoFormulario";
+        }
+        return "redirect:/pedidos?error=true";
     }
 
     @GetMapping
@@ -55,9 +60,15 @@ public class PedidoController {
 
     @GetMapping("/borrarPedido/{id}")
     public String borrar(@PathVariable Long id) {
-        pedidoService.deleteById(id);
+        Optional<Pedido> pedido = pedidoService.findById(id);
+        if (pedido.isPresent()) {
+            pedidoService.deleteById(id);
+        } else {
+            return "redirect:/pedidos?error=true";
+        }
         return "redirect:/pedidos";
     }
+
 
     @GetMapping("/verPedido/{id}")
     public String ver(@PathVariable Long id, Model model) {
