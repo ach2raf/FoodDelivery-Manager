@@ -6,16 +6,23 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.FoodDelivery_Manager.model.Entrega;
+import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
+import com.salesianostriana.FoodDelivery_Manager.model.EstadoPedido;
+import com.salesianostriana.FoodDelivery_Manager.model.Pedido;
+import com.salesianostriana.FoodDelivery_Manager.repository.EntregaPedidoRepository;
 import com.salesianostriana.FoodDelivery_Manager.repository.EntregaRepository;
+import com.salesianostriana.FoodDelivery_Manager.repository.PedidoRepository;
 import com.salesianostriana.FoodDelivery_Manager.service.base.BaseServiceImpl;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaRepository>{
+public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaRepository> {
 
     private final EntregaRepository entregaRepository;
+    private final PedidoRepository pedidoRepository;
+    private final EntregaPedidoRepository entregaPedidoRepository;
 
     public Entrega save(Entrega entrega) {
         return entregaRepository.save(entrega);
@@ -32,4 +39,22 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     public void deleteById(Long id) {
         entregaRepository.deleteById(id);
     }
+
+    public void asignarPedido(Long entregaId, Long pedidoId, Integer prioridad) {
+    Entrega entrega = entregaRepository.findById(entregaId)
+        .orElseThrow(() -> new RuntimeException("Entrega no encontrada"));
+
+    Pedido pedido = pedidoRepository.findById(pedidoId)
+        .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+    EntregaPedido ep = new EntregaPedido();
+    ep.setEntrega(entrega);
+    ep.setPedido(pedido);
+    ep.setPrioridad(prioridad);
+    ep.setEstado(EstadoPedido.EN_REPARTO);
+    ep.setCoste(pedido.getPrecio() * 1.2);
+
+    entregaPedidoRepository.save(ep);
+}
+    
 }
