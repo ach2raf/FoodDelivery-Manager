@@ -167,9 +167,24 @@
 
         <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-search me-2 text-primary"></i>Consultas</h6>
         <ul class="nav flex-column gap-1 small mb-3">
-          <li class="nav-item"><a class="nav-link nav-link-custom text-muted rounded py-2" href="#"><i class="bi bi-calendar3 me-2"></i>1. Pedidos por Fecha</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom text-muted rounded py-2" href="#"><i class="bi bi-person-check me-2"></i>2. Repartidores Activos</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom text-muted rounded py-2" href="#"><i class="bi bi-lightning-charge me-2"></i>3. Entregas Rápidas</a></li>
+    <li class="nav-item">
+        <a class="nav-link nav-link-custom text-muted rounded py-2"
+           th:href="@{/consultas/pedidosPorFecha}">
+            <i class="bi bi-calendar3 me-2"></i>1. Pedidos por Fecha
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link nav-link-custom text-muted rounded py-2"
+           th:href="@{/consultas/repartidoresActivos}">
+            <i class="bi bi-person-check me-2"></i>2. Repartidores Activos
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link nav-link-custom text-muted rounded py-2"
+           th:href="@{/consultas/entregasRapidas}">
+            <i class="bi bi-lightning-charge me-2"></i>3. Entregas Rápidas
+        </a>
+    </li>
         </ul>
       </div>
 
