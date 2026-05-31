@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.FoodDelivery_Manager.exception.EntregaInvalidaException;
+import com.salesianostriana.FoodDelivery_Manager.exception.RepartidorNoDisponibleException;
 import com.salesianostriana.FoodDelivery_Manager.exception.TiempoExcedidoException;
 import com.salesianostriana.FoodDelivery_Manager.model.Entrega;
 import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
@@ -61,7 +62,12 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-                validarLimitePedidos(entrega);
+        if (entrega.getRepartidor() == null) {
+            throw new RepartidorNoDisponibleException(
+                    "La entrega no tiene repartidor asignado");
+        }
+        validarLimitePedidos(entrega);
+        validarPedidoDuplicado(entrega, pedidoId);
 
         EntregaPedido ep = new EntregaPedido();
         ep.setEntrega(entrega);
@@ -106,21 +112,31 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     }
 
     private Double calcularCoste(Pedido pedido, Repartidor repartidor) {
-    double factor = switch (repartidor.getZona().toLowerCase()) {
-        case "centro" -> 1.0;
-        case "norte", "sur" -> 1.2;
-        case "este", "oeste" -> 1.5;
-        default -> 1.3;
-    };
-    return pedido.getPrecio() * factor;
-}
-
-private void validarLimitePedidos(Entrega entrega) {
-    if (entrega.getEntregaPedidos() != null &&
-        entrega.getEntregaPedidos().size() >= 5) {
-        throw new EntregaInvalidaException(
-            "Una entrega no puede tener más de 5 pedidos");
+        double factor = switch (repartidor.getZona().toLowerCase()) {
+            case "centro" -> 1.0;
+            case "norte", "sur" -> 1.2;
+            case "este", "oeste" -> 1.5;
+            default -> 1.3;
+        };
+        return pedido.getPrecio() * factor;
     }
-}
+
+    private void validarLimitePedidos(Entrega entrega) {
+        if (entrega.getEntregaPedidos() != null &&
+                entrega.getEntregaPedidos().size() >= 5) {
+            throw new EntregaInvalidaException(
+                    "Una entrega no puede tener más de 5 pedidos");
+        }
+    }
+
+    private void validarPedidoDuplicado(Entrega entrega, Long pedidoId) {
+        boolean yaAsignado = entrega.getEntregaPedidos() != null &&
+                entrega.getEntregaPedidos().stream()
+                        .anyMatch(ep -> ep.getPedido().getId().equals(pedidoId));
+        if (yaAsignado) {
+            throw new EntregaInvalidaException(
+                    "Este pedido ya está asignado a esta entrega");
+        }
+    }
 
 }
