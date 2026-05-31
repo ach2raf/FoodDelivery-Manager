@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.FoodDelivery_Manager.exception.EntregaInvalidaException;
 import com.salesianostriana.FoodDelivery_Manager.exception.TiempoExcedidoException;
 import com.salesianostriana.FoodDelivery_Manager.model.Entrega;
 import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
@@ -29,11 +30,16 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
 
     public Entrega save(Entrega entrega) {
         if (entrega.getTiempo() != null && entrega.getTiempo() > 120) {
-        throw new TiempoExcedidoException(
-            "El tiempo no puede superar los 120 minutos");
-    }
+            throw new TiempoExcedidoException(
+                    "El tiempo no puede superar los 120 minutos");
+        }
 
-    return entregaRepository.save(entrega);
+        if (tieneSolapamiento(entrega)) {
+            throw new EntregaInvalidaException(
+                    "El repartidor ya tiene una entrega en ese horario");
+        }
+
+        return entregaRepository.save(entrega);
     }
 
     public List<Entrega> findAll() {
@@ -75,6 +81,25 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
 
     public List<Entrega> findEntregasRapidas() {
         return entregaRepository.findByTiempoLessThan(30);
+    }
+
+    private boolean tieneSolapamiento(Entrega nueva) {
+    if (nueva.getRepartidor() == null || nueva.getFecha() == null
+            || nueva.getTiempo() == null) return false;
+
+    LocalDateTime inicioNueva = nueva.getFecha();
+    LocalDateTime finNueva = nueva.getFecha().plusMinutes(nueva.getTiempo());
+
+    return entregaRepository.findAll().stream()
+        .filter(e -> e.getRepartidor() != null)
+        .filter(e -> e.getRepartidor().getId()
+            .equals(nueva.getRepartidor().getId()))
+        .filter(e -> nueva.getId() == null || !e.getId().equals(nueva.getId()))
+        .anyMatch(e -> {
+            LocalDateTime ini = e.getFecha();
+            LocalDateTime fin = e.getFecha().plusMinutes(e.getTiempo());
+            return inicioNueva.isBefore(fin) && finNueva.isAfter(ini);
+        });
     }
 
 }
