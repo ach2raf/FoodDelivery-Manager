@@ -66,7 +66,7 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         ep.setPedido(pedido);
         ep.setPrioridad(prioridad);
         ep.setEstado(EstadoPedido.EN_REPARTO);
-        ep.setCoste(pedido.getPrecio() * 1.2);
+        ep.setCoste(calcularCoste(pedido, entrega.getRepartidor()));
 
         entregaPedidoRepository.save(ep);
     }
@@ -84,22 +84,33 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     }
 
     private boolean tieneSolapamiento(Entrega nueva) {
-    if (nueva.getRepartidor() == null || nueva.getFecha() == null
-            || nueva.getTiempo() == null) return false;
+        if (nueva.getRepartidor() == null || nueva.getFecha() == null
+                || nueva.getTiempo() == null)
+            return false;
 
-    LocalDateTime inicioNueva = nueva.getFecha();
-    LocalDateTime finNueva = nueva.getFecha().plusMinutes(nueva.getTiempo());
+        LocalDateTime inicioNueva = nueva.getFecha();
+        LocalDateTime finNueva = nueva.getFecha().plusMinutes(nueva.getTiempo());
 
-    return entregaRepository.findAll().stream()
-        .filter(e -> e.getRepartidor() != null)
-        .filter(e -> e.getRepartidor().getId()
-            .equals(nueva.getRepartidor().getId()))
-        .filter(e -> nueva.getId() == null || !e.getId().equals(nueva.getId()))
-        .anyMatch(e -> {
-            LocalDateTime ini = e.getFecha();
-            LocalDateTime fin = e.getFecha().plusMinutes(e.getTiempo());
-            return inicioNueva.isBefore(fin) && finNueva.isAfter(ini);
-        });
+        return entregaRepository.findAll().stream()
+                .filter(e -> e.getRepartidor() != null)
+                .filter(e -> e.getRepartidor().getId()
+                        .equals(nueva.getRepartidor().getId()))
+                .filter(e -> nueva.getId() == null || !e.getId().equals(nueva.getId()))
+                .anyMatch(e -> {
+                    LocalDateTime ini = e.getFecha();
+                    LocalDateTime fin = e.getFecha().plusMinutes(e.getTiempo());
+                    return inicioNueva.isBefore(fin) && finNueva.isAfter(ini);
+                });
     }
+
+    private Double calcularCoste(Pedido pedido, Repartidor repartidor) {
+    double factor = switch (repartidor.getZona().toLowerCase()) {
+        case "centro" -> 1.0;
+        case "norte", "sur" -> 1.2;
+        case "este", "oeste" -> 1.5;
+        default -> 1.3;
+    };
+    return pedido.getPrecio() * factor;
+}
 
 }
