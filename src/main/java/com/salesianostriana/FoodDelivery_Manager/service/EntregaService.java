@@ -61,6 +61,8 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
+                validarLimitePedidos(entrega);
+
         EntregaPedido ep = new EntregaPedido();
         ep.setEntrega(entrega);
         ep.setPedido(pedido);
@@ -111,6 +113,14 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         default -> 1.3;
     };
     return pedido.getPrecio() * factor;
+}
+
+private void validarLimitePedidos(Entrega entrega) {
+    if (entrega.getEntregaPedidos() != null &&
+        entrega.getEntregaPedidos().size() >= 5) {
+        throw new EntregaInvalidaException(
+            "Una entrega no puede tener más de 5 pedidos");
+    }
 }
 
 }
