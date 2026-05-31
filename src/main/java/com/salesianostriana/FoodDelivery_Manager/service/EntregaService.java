@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.FoodDelivery_Manager.exception.TiempoExcedidoException;
 import com.salesianostriana.FoodDelivery_Manager.model.Entrega;
 import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
 import com.salesianostriana.FoodDelivery_Manager.model.EstadoPedido;
@@ -27,7 +28,12 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     private final EntregaPedidoRepository entregaPedidoRepository;
 
     public Entrega save(Entrega entrega) {
-        return entregaRepository.save(entrega);
+        if (entrega.getTiempo() != null && entrega.getTiempo() > 120) {
+        throw new TiempoExcedidoException(
+            "El tiempo no puede superar los 120 minutos");
+    }
+
+    return entregaRepository.save(entrega);
     }
 
     public List<Entrega> findAll() {
