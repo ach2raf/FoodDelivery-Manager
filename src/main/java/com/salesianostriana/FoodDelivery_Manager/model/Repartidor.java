@@ -2,26 +2,31 @@ package com.salesianostriana.FoodDelivery_Manager.model;
 
 import java.util.List;
 
+import com.salesianostriana.FoodDelivery_Manager.usuario.User;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Repartidor {
+@SuperBuilder
+@Getter
+@Setter
+public class Repartidor extends User{
 
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+   
 
 
     @NotBlank(message="el nombre es obligatorio")

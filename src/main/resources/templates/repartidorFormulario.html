@@ -20,7 +20,8 @@
 
     <div th:replace="~{fragments/layout :: navbar}"></div>
 
-<div class="container mt-4 mb-5 flex-grow-1" style="max-width: 500px;">        <h2 class="fw-bold mb-4">
+    <div class="container mt-4 mb-5 flex-grow-1" style="max-width: 500px;">        
+        <h2 class="fw-bold mb-4">
             <i class="bi bi-person text-primary me-2"></i>
             <span th:text="${repartidor.id == null} ? 'Nuevo Repartidor' : 'Editar Repartidor'"></span>
         </h2>
@@ -41,6 +42,17 @@
                     <input type="text" th:field="*{zona}" class="form-control form-control-sm"
                         th:classappend="${#fields.hasErrors('zona')} ? 'is-invalid'">
                     <div class="invalid-feedback" th:errors="*{zona}"></div>
+                </div>
+
+                <div th:if="${repartidor.id == null}">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre de Usuario (Login)</label>
+                        <input type="text" th:field="*{username}" class="form-control form-control-sm" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Contraseña</label>
+                        <input type="password" th:field="*{password}" class="form-control form-control-sm" required>
+                    </div>
                 </div>
 
                 <div class="d-flex gap-2">

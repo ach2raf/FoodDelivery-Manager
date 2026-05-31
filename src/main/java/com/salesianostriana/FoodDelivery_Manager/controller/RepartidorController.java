@@ -2,6 +2,7 @@ package com.salesianostriana.FoodDelivery_Manager.controller;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.salesianostriana.FoodDelivery_Manager.model.Repartidor;
 import com.salesianostriana.FoodDelivery_Manager.service.RepartidorService;
+import com.salesianostriana.FoodDelivery_Manager.usuario.UserRole;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,73 +24,85 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RepartidorController {
 
-    
-    private  final RepartidorService repartidorService;
+    private final RepartidorService repartidorService;
+    private final PasswordEncoder passwordEncoder;
 
-     @GetMapping("/nuevoRepartidor")
-   public String nuevo(Model model){
+    @GetMapping("/nuevoRepartidor")
+    public String nuevo(Model model) {
 
-
-    model.addAttribute("repartidor",new Repartidor());
-    return "repartidorFormulario";
-   }
+        model.addAttribute("repartidor", new Repartidor());
+        return "repartidorFormulario";
+    }
 
     @PostMapping("/nuevoRepartidor/submit")
-   public String guardar(@Valid @ModelAttribute Repartidor repartidor,BindingResult result){
-    if(result.hasErrors()){
-        return "repartidorFormulario";
-    }
-    repartidorService.save(repartidor);
-    return "redirect:/repartidores";
-   }
+    public String guardar(@Valid @ModelAttribute Repartidor repartidor, BindingResult result) {
+        if (result.hasErrors()) {
+            return "repartidorFormulario";
+        }
 
-   @GetMapping("/editarRepartidor/{id}")
-public String editar(@PathVariable Long id, Model model) {
+        if (repartidor.getId() == null) {
 
-    Optional<Repartidor>repartidor=repartidorService.findById(id);
+            repartidor.setPassword(passwordEncoder.encode(repartidor.getPassword()));
+            repartidor.setRol(UserRole.OPERADOR);
 
-    if (repartidor.isPresent()) {
-        model.addAttribute("repartidor", repartidor.get());
-        return "repartidorFormulario";
-    } else {
+        } else {
+            Optional<Repartidor> antiguoOpt = repartidorService.findById(repartidor.getId());
+            if (antiguoOpt.isPresent()) {
+                Repartidor antiguo = antiguoOpt.get();
+                repartidor.setUsername(antiguo.getUsername());
+                repartidor.setPassword(antiguo.getPassword());
+                repartidor.setRol(antiguo.getRol());
+            }
+        }
+        repartidorService.save(repartidor);
         return "redirect:/repartidores";
     }
-}
 
-@GetMapping
-   public String listaRepartidores(Model model){
+    @GetMapping("/editarRepartidor/{id}")
+    public String editar(@PathVariable Long id, Model model) {
 
+        Optional<Repartidor> repartidor = repartidorService.findById(id);
 
-    model.addAttribute("repartidores", repartidorService.findAll());
-    return "repartidoresLista";
-   }
-
-   @GetMapping("/borrarRepartidor/{id}")
-public String borrar(@PathVariable Long id) {
-
-    Optional<Repartidor> repartidor = repartidorService.findById(id);
-
-    if (repartidor.isPresent()) {
-        repartidorService.deleteById(id);
-    } else {
-        return "redirect:/repartidores?error=true";
+        if (repartidor.isPresent()) {
+            model.addAttribute("repartidor", repartidor.get());
+            return "repartidorFormulario";
+        } else {
+            return "redirect:/repartidores";
+        }
     }
 
-    return "redirect:/repartidores";
-}
+    @GetMapping
+    public String listaRepartidores(Model model) {
 
- @GetMapping("/verRepartidor/{id}")
-public String ver(@PathVariable Long id, Model model) {
-
-    Optional<Repartidor> repartidor = repartidorService.findById(id);
-
-    if (repartidor.isPresent()) {
-        model.addAttribute("repartidor", repartidor.get());
-        return "verRepartidor";
-    } else {
-        return "redirect:/repartidores?error=true";
+        model.addAttribute("repartidores", repartidorService.findAll());
+        return "repartidoresLista";
     }
-}
 
+    @GetMapping("/borrarRepartidor/{id}")
+    public String borrar(@PathVariable Long id) {
+
+        Optional<Repartidor> repartidor = repartidorService.findById(id);
+
+        if (repartidor.isPresent()) {
+            repartidorService.deleteById(id);
+        } else {
+            return "redirect:/repartidores?error=true";
+        }
+
+        return "redirect:/repartidores";
+    }
+
+    @GetMapping("/verRepartidor/{id}")
+    public String ver(@PathVariable Long id, Model model) {
+
+        Optional<Repartidor> repartidor = repartidorService.findById(id);
+
+        if (repartidor.isPresent()) {
+            model.addAttribute("repartidor", repartidor.get());
+            return "verRepartidor";
+        } else {
+            return "redirect:/repartidores?error=true";
+        }
+    }
 
 }
