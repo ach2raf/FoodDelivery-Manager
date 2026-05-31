@@ -52,11 +52,11 @@
                            class="btn btn-sm btn-info">
                             <i class="bi bi-eye"></i> Ver
                         </a>
-                        <a th:href="@{/pedidos/editarPedido/{id}(id=${p.id})}"
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/pedidos/editarPedido/{id}(id=${p.id})}"
                            class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
-                        <a th:href="@{/pedidos/borrarPedido/{id}(id=${p.id})}"
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/pedidos/borrarPedido/{id}(id=${p.id})}"
                            class="btn btn-sm btn-danger"
                            onclick="return confirm('¿Seguro que quieres eliminar este pedido?')">
                             <i class="bi bi-trash"></i> Borrar

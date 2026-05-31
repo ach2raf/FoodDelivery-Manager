@@ -108,10 +108,10 @@
                         <a th:href="@{/entregas/asignarPedido/{id}(id=${e.id})}" class="btn btn-sm btn-success">
                             <i class="bi bi-box-arrow-in-down"></i> Asignar
                         </a>
-                        <a th:href="@{/entregas/editarEntrega/{id}(id=${e.id})}" class="btn btn-sm btn-warning">
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/entregas/editarEntrega/{id}(id=${e.id})}" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
-                        <a th:href="@{/entregas/borrarEntrega/{id}(id=${e.id})}" class="btn btn-sm btn-danger"
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/entregas/borrarEntrega/{id}(id=${e.id})}" class="btn btn-sm btn-danger"
                             onclick="return confirm('¿Seguro que quieres borrar esta entrega?')">
                             <i class="bi bi-trash"></i> Borrar
                         </a>
