@@ -94,6 +94,8 @@
                     <th>Fecha</th>
                     <th>Tiempo</th>
                     <th>Repartidor</th>
+                    <th>Coste Total</th>
+                    <th>Estado Pedidos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -104,6 +106,31 @@
                     <td th:text="${#temporals.format(e.fecha, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${e.tiempo} + ' min'"></td>
                     <td th:text="${e.repartidor != null} ? ${e.repartidor.nombre} : 'Sin asignar'"></td>
+                    
+                    <td th:text="${e.entregaPedidos != null and !#lists.isEmpty(e.entregaPedidos)} 
+                               ? ${#numbers.formatDecimal(#aggregates.sum(e.entregaPedidos.![coste]), 1, 2)} + ' €' 
+                               : '0.00 €'">
+                    </td>
+
+                    <td>
+                        <div th:each="ep : ${e.entregaPedidos}" class="d-flex align-items-center gap-2 mb-1">
+                            <small class="text-muted" th:text="${ep.pedido.codigo} + ':'"></small>
+                            
+                            <span th:if="${ep.estado.name() == 'PENDIENTE'}" class="badge bg-secondary">PENDIENTE</span>
+                            <span th:if="${ep.estado.name() == 'EN_REPARTO'}" class="badge bg-info text-dark">EN REPARTO</span>
+                            <span th:if="${ep.estado.name() == 'ENTREGADO'}" class="badge bg-success">ENTREGADO</span>
+                            
+                            <a th:if="${ep.estado.name() == 'EN_REPARTO'}" 
+                               th:href="@{/entregas/completarPedido/{id}(id=${ep.id})}" 
+                               class="btn btn-xs btn-outline-success py-0 px-1" 
+                               style="font-size: 0.7rem;" 
+                               title="Marcar como entregado">
+                                <i class="bi bi-check2"></i> Listo
+                            </a>
+                        </div>
+                        <span th:if="${#lists.isEmpty(e.entregaPedidos)}" class="badge bg-light text-muted border">Sin pedidos</span>
+                    </td>
+
                     <td>
                         <a th:href="@{/entregas/asignarPedido/{id}(id=${e.id})}" class="btn btn-sm btn-success">
                             <i class="bi bi-box-arrow-in-down"></i> Asignar

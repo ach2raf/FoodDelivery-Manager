@@ -102,7 +102,6 @@
                     <input type="number" th:field="*{tiempo}" class="form-control form-control-sm" required min="1"
                         max="120" th:classappend="${#fields.hasErrors('tiempo')} ? 'is-invalid'">
                     <div class="invalid-feedback" th:errors="*{tiempo}"></div>
-                    <div id="coste-estimado" class="alert alert-info mt-2 d-none py-1 small"></div>
                 </div>
 
                 <div class="mb-3">
@@ -128,20 +127,6 @@
     <div th:replace="~{fragments/layout :: footer}"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.querySelector('#tiempo').addEventListener('input', function () {
-            const tiempo = parseInt(this.value) || 0;
-            const factor = tiempo > 60 ? 1.5 : tiempo > 30 ? 1.2 : 1.0;
-            const coste = (tiempo * factor).toFixed(2);
-            const div = document.querySelector('#coste-estimado');
-            if (tiempo > 0) {
-                div.classList.remove('d-none');
-                div.textContent = ' Coste estimado: ' + coste + ' €';
-            } else {
-                div.classList.add('d-none');
-            }
-        });
-    </script>
 </body>
 
 </html>

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.FoodDelivery_Manager.model.Pedido;
+import com.salesianostriana.FoodDelivery_Manager.repository.EntregaPedidoRepository;
 import com.salesianostriana.FoodDelivery_Manager.repository.PedidoRepository;
 import com.salesianostriana.FoodDelivery_Manager.service.base.BaseServiceImpl;
 
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepository>{
 
     private final PedidoRepository pedidoRepository;
+    private final EntregaPedidoRepository entregaPedidoRepository;
 
     @Override
      public Pedido save(Pedido pedido){
@@ -39,6 +41,13 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
     }
 
 
+    public List<Pedido> findPedidosPendientes() {
+        List<Pedido> todos = pedidoRepository.findAll();
+        List<Pedido> asignados = entregaPedidoRepository.findPedidosAsignados();
+        
+        todos.removeAll(asignados);
+        return todos;
+    }
 
 
 

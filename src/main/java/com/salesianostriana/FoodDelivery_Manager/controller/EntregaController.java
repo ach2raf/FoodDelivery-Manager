@@ -29,7 +29,6 @@ public class EntregaController {
     private final RepartidorService repartidorService;
     private final PedidoService pedidoService;
 
-
     @GetMapping("/nuevaEntrega")
     public String nuevo(Model model) {
         model.addAttribute("entrega", new Entrega());
@@ -82,7 +81,7 @@ public class EntregaController {
         Optional<Entrega> entrega = entregaService.findById(entregaId);
         if (entrega.isPresent()) {
             model.addAttribute("entrega", entrega.get());
-            model.addAttribute("pedidos", pedidoService.findAll());
+            model.addAttribute("pedidos", pedidoService.findPedidosPendientes());
             return "asignarPedido";
         }
         return "redirect:/entregas?error=true";
@@ -98,10 +97,16 @@ public class EntregaController {
         } catch (RuntimeException e) {
             Optional<Entrega> entrega = entregaService.findById(entregaId);
             entrega.ifPresent(en -> model.addAttribute("entrega", en));
-            model.addAttribute("pedidos", pedidoService.findAll());
+            model.addAttribute("pedidos", pedidoService.findPedidosPendientes());
             model.addAttribute("error", e.getMessage());
             return "asignarPedido";
         }
+        return "redirect:/entregas";
+    }
+
+    @GetMapping("/completarPedido/{entregaPedidoId}")
+    public String completarPedido(@PathVariable Long entregaPedidoId) {
+        entregaService.marcarComoEntregado(entregaPedidoId);
         return "redirect:/entregas";
     }
 

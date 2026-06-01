@@ -139,4 +139,12 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         }
     }
 
+    public void marcarComoEntregado(Long entregaPedidoId) {
+    EntregaPedido ep = entregaPedidoRepository.findById(entregaPedidoId)
+            .orElseThrow(() -> new RuntimeException("Asignación de pedido no encontrada"));
+    
+    ep.setEstado(EstadoPedido.ENTREGADO);
+    entregaPedidoRepository.save(ep);
+}
+
 }
