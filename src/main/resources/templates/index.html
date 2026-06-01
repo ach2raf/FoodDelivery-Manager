@@ -10,7 +10,7 @@
 
   <style>
     body {
-      padding-top: 56px; 
+      padding-top: 56px;
       background-color: #f8f9fa;
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       display: flex;
@@ -51,7 +51,7 @@
 
     .nav-link-custom:hover {
       background-color: rgba(13, 110, 253, 0.1);
-      color: #0d6efd !important;
+      color: #0d6efd;
     }
 
     .card-custom {
@@ -60,41 +60,41 @@
     }
 
     .btn-menu-minimal {
-      background: none !important;
-      border: none !important;
-      color: rgba(255, 255, 255, 0.75) !important;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.75);
       padding: 0.5rem;
       transition: color 0.2s ease-in-out;
     }
 
     .btn-menu-minimal:hover {
-      color: #0d6efd !important;
+      color: #0d6efd;
     }
 
     .btn-login-outline-custom {
-      background-color: transparent !important;
-      color: #0d6efd !important;
-      border: 1px solid #0d6efd !important;
+      background-color: transparent;
+      color: #0d6efd;
+      border: 1px solid #0d6efd;
     }
 
     .btn-login-outline-custom:hover {
-      background-color: #0d6efd !important;
-      color: white !important;
+      background-color: #0d6efd;
+      color: white;
     }
 
     .btn-danger-outline-custom {
-      background-color: transparent !important;
-      color: #dc3545 !important;
-      border: 1px solid #dc3545 !important;
+      background-color: transparent;
+      color: #dc3545;
+      border: 1px solid #dc3545;
     }
 
     .btn-danger-outline-custom:hover {
-      background-color: #dc3545 !important;
-      color: white !important;
+      background-color: #dc3545;
+      color: white;
     }
 
     .just-eat-footer {
-      background-color: #212529 !important;
+      background-color: #212529;
       color: #ffffff;
       padding: 24px 0;
       border-top: 1px solid #343a40;
@@ -162,21 +162,26 @@
       <div class="collapse navbar-collapse" id="navContent">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item"><a class="nav-link active" th:href="@{/}">Inicio</a></li>
-          <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/pedidos}">Pedidos</a></li>
-          <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/entregas}">Entregas</a></li>
-          <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/repartidores}">Repartidores</a></li>
+          <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/pedidos}">Pedidos</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/entregas}">Entregas</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link"
+              th:href="@{/repartidores}">Repartidores</a></li>
         </ul>
 
         <div class="d-flex align-items-center mt-2 mt-md-0">
-          <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-sm btn-login-outline-custom fw-bold px-3 my-auto">
+          <a sec:authorize="!isAuthenticated()" th:href="@{/login}"
+            class="btn btn-sm btn-login-outline-custom fw-bold px-3 my-auto">
             <i class="bi bi-person me-1"></i>Login
           </a>
-          
+
           <span sec:authorize="isAuthenticated()" class="text-white small my-auto me-3">
             Hola, <span class="text-primary fw-bold" sec:authentication="name">Usuario</span>
           </span>
 
-          <button sec:authorize="isAuthenticated()" class="btn btn-menu-minimal p-0 lh-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" title="Abrir Consola">
+          <button sec:authorize="isAuthenticated()" class="btn btn-menu-minimal p-0 lh-1" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" title="Abrir Consola">
             <i class="bi bi-list fs-2"></i>
           </button>
         </div>
@@ -185,21 +190,28 @@
   </nav>
 
   <div class="hero-container shadow-sm">
-    <img src="https://plus.unsplash.com/premium_photo-1661438370766-8b68ab6cd632?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cmVwYXJ0aWRvcnxlbnwwfHwwfHx8MA%3D%3D" class="hero-banner" />
+    <img
+      src="https://plus.unsplash.com/premium_photo-1661438370766-8b68ab6cd632?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cmVwYXJ0aWRvcnxlbnwwfHwwfHx8MA%3D%3D"
+      class="hero-banner" />
     <div class="hero-overlay-text">
-      <h1 class="display-5 fw-extrabold text-white text-uppercase tracking-wider m-0" style="text-shadow: 0px 4px 10px rgba(0,0,0,0.7);">Gestión de Envíos y Pedidos</h1>
-      <p class="text-light fs-5 mt-2 opacity-90 d-none d-sm-block">Monitoreo en tiempo real de repartidores y entregas a domicilio</p>
+      <h1 class="display-5 fw-extrabold text-white text-uppercase tracking-wider m-0"
+        style="text-shadow: 0px 4px 10px rgba(0,0,0,0.7);">Gestión de Envíos y Pedidos</h1>
+      <p class="text-light fs-5 mt-2 opacity-90 d-none d-sm-block">Monitoreo en tiempo real de repartidores y entregas a
+        domicilio</p>
     </div>
   </div>
 
   <div class="container-fluid px-4" style="margin-bottom: 400px;">
     <main class="bg-white p-5 rounded shadow-sm card-custom border">
-      <h3 class="fw-bold text-dark mb-3"><i class="bi bi-speedometer2 text-primary me-2"></i>Bienvenido al Panel de Control</h3>
-      <p class="text-muted fs-6 mb-0 lh-lg">Desde aquí puedes registrar nuevos pedidos, dar de alta repartidores en el sistema y optimizar las rutas de entrega para garantizar que cada plato llegue caliente y a tiempo.</p>
+      <h3 class="fw-bold text-dark mb-3"><i class="bi bi-speedometer2 text-primary me-2"></i>Bienvenido al Panel de
+        Control</h3>
+      <p class="text-muted fs-6 mb-0 lh-lg">Desde aquí puedes registrar nuevos pedidos, dar de alta repartidores en el
+        sistema y optimizar las rutas de entrega para garantizar que cada plato llegue caliente y a tiempo.</p>
     </main>
   </div>
 
-  <div class="offcanvas offcanvas-start border-end border-primary" tabindex="-1" id="sidebarMenu" style="width: 320px; background-color: #ffffff;">
+  <div class="offcanvas offcanvas-start border-end border-primary" tabindex="-1" id="sidebarMenu"
+    style="width: 320px; background-color: #ffffff;">
     <div class="offcanvas-header bg-dark text-white border-bottom border-secondary py-3">
       <div class="d-flex align-items-center gap-2">
         <i class="bi bi-sliders text-primary fs-4"></i>
@@ -214,30 +226,43 @@
           <span class="text-muted d-block small text-uppercase fw-semibold mb-1">Operador Autenticado</span>
           <div class="p-2 bg-light rounded d-flex align-items-center justify-content-between">
             <h6 class="fw-bold text-dark m-0" sec:authentication="name">NombreUsuario</h6>
-            <span sec:authorize="hasRole('ADMIN')" class="badge bg-danger px-2 py-1" style="font-size: 0.65rem;">ADMIN</span>
-            <span sec:authorize="hasRole('OPERADOR')" class="badge bg-primary px-2 py-1" style="font-size: 0.65rem;">OPERADOR</span>
+            <span sec:authorize="hasRole('ADMIN')" class="badge bg-danger px-2 py-1"
+              style="font-size: 0.65rem;">ADMIN</span>
+            <span sec:authorize="hasRole('OPERADOR')" class="badge bg-primary px-2 py-1"
+              style="font-size: 0.65rem;">OPERADOR</span>
           </div>
         </div>
 
         <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-bag me-2 text-primary"></i>Pedidos</h6>
         <ul class="nav flex-column gap-1 mb-3">
-          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/pedidos}"><i class="bi bi-list-ul text-primary me-2"></i>Ver todos los Pedidos</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/pedidos/nuevoPedido}"><i class="bi bi-plus-circle text-primary me-2"></i>Registrar Pedido</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/pedidos}"><i
+                class="bi bi-list-ul text-primary me-2"></i>Ver todos los Pedidos</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2"
+              th:href="@{/pedidos/nuevoPedido}"><i class="bi bi-plus-circle text-primary me-2"></i>Registrar Pedido</a>
+          </li>
         </ul>
 
-        <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-truck me-2 text-primary"></i>Entregas</h6>
+        <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-truck me-2 text-primary"></i>Entregas
+        </h6>
         <ul class="nav flex-column gap-1 mb-3">
-          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/entregas}"><i class="bi bi-list-ul text-primary me-2"></i>Ver todas las Entregas</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/entregas/nuevaEntrega}"><i class="bi bi-map text-primary me-2"></i>Planificar Rutas</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/entregas}"><i
+                class="bi bi-list-ul text-primary me-2"></i>Ver todas las Entregas</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2"
+              th:href="@{/entregas/nuevaEntrega}"><i class="bi bi-map text-primary me-2"></i>Planificar Rutas</a></li>
         </ul>
 
-        <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-people me-2 text-primary"></i>Repartidores</h6>
+        <h6 class="text-uppercase small fw-bold text-muted mb-2"><i
+            class="bi bi-people me-2 text-primary"></i>Repartidores</h6>
         <ul class="nav flex-column gap-1 mb-3">
-          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/repartidores}"><i class="bi bi-list-ul text-primary me-2"></i>Ver Repartidores</a></li>
-          <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/repartidores/nuevoRepartidor}"><i class="bi bi-person-plus text-danger me-2"></i>Alta de Repartidor</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/repartidores}"><i
+                class="bi bi-list-ul text-primary me-2"></i>Ver Repartidores</a></li>
+          <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a
+              class="nav-link nav-link-custom text-dark rounded py-2" th:href="@{/repartidores/nuevoRepartidor}"><i
+                class="bi bi-person-plus text-danger me-2"></i>Alta de Repartidor</a></li>
         </ul>
 
-        <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-search me-2 text-primary"></i>Consultas</h6>
+        <h6 class="text-uppercase small fw-bold text-muted mb-2"><i class="bi bi-search me-2 text-primary"></i>Consultas
+        </h6>
         <ul class="nav flex-column gap-1 small mb-3">
           <li class="nav-item">
             <a class="nav-link nav-link-custom text-muted rounded py-2" th:href="@{/consultas/pedidosPorFecha}">
@@ -257,9 +282,10 @@
         </ul>
       </div>
 
-      <div class="pt-3 border-top mt-auto">
+      <div sec:authorize="isAuthenticated()" class="pt-3 border-top mt-auto">
         <form th:action="@{/logout}" method="post" class="m-0">
-          <button type="submit" class="btn btn-danger-outline-custom w-100 fw-bold d-flex align-items-center justify-content-center gap-2 py-2">
+          <button type="submit"
+            class="btn btn-danger-outline-custom w-100 fw-bold d-flex align-items-center justify-content-center gap-2 py-2">
             <i class="bi bi-box-arrow-right fs-5"></i> Cerrar Sesión
           </button>
         </form>
