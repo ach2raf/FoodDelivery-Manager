@@ -4,13 +4,12 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.ui.Model;
 
 import com.salesianostriana.FoodDelivery_Manager.service.EntregaService;
-import com.salesianostriana.FoodDelivery_Manager.service.RepartidorService;
 
 import lombok.AllArgsConstructor;
 
@@ -20,7 +19,6 @@ import lombok.AllArgsConstructor;
 public class ConsultaController {
 
     private final EntregaService entregaService;
-    private final RepartidorService repartidorService;
 
      @GetMapping("/pedidosPorFecha")
     public String pedidosPorFecha(
