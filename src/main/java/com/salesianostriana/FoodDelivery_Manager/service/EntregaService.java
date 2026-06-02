@@ -31,6 +31,11 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
 
     @Override
     public Entrega save(Entrega entrega) {
+
+        if (entrega.getRepartidor() == null || entrega.getRepartidor().getId() == null) {
+            throw new RepartidorNoDisponibleException("La entrega no tiene repartidor");
+        }
+
         if (entrega.getTiempo() != null && entrega.getTiempo() > 120) {
             throw new TiempoExcedidoException(
                     "El tiempo no puede superar los 120 minutos");
@@ -66,10 +71,6 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        if (entrega.getRepartidor() == null) {
-            throw new RepartidorNoDisponibleException(
-                    "La entrega no tiene repartidor asignado");
-        }
         validarLimitePedidos(entrega);
         validarPedidoDuplicado(entrega, pedidoId);
 
@@ -143,4 +144,15 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    public void marcarComoEntregado(Long entregaPedidoId) {
+        EntregaPedido ep = entregaPedidoRepository.findById(entregaPedidoId)
+                .orElseThrow(() -> new RuntimeException("Asignación de pedido no encontrada"));
+
+        ep.setEstado(EstadoPedido.ENTREGADO);
+        entregaPedidoRepository.save(ep);
+    }
+
+>>>>>>> Stashed changes
 }
