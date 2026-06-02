@@ -29,6 +29,7 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     private final PedidoRepository pedidoRepository;
     private final EntregaPedidoRepository entregaPedidoRepository;
 
+    @Override
     public Entrega save(Entrega entrega) {
         if (entrega.getTiempo() != null && entrega.getTiempo() > 120) {
             throw new TiempoExcedidoException(
@@ -43,14 +44,17 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         return entregaRepository.save(entrega);
     }
 
+    @Override
     public List<Entrega> findAll() {
         return entregaRepository.findAll();
     }
 
+    @Override
     public Optional<Entrega> findById(Long id) {
         return entregaRepository.findById(id);
     }
 
+    @Override
     public void deleteById(Long id) {
         entregaRepository.deleteById(id);
     }

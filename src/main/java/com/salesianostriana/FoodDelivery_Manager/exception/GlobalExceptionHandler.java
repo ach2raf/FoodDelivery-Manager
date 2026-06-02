@@ -10,20 +10,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntregaInvalidaException.class)
     public String handleEntregaInvalida(EntregaInvalidaException e, Model model) {
-        model.addAttribute("error", e.getMessage());
+        model.addAttribute("mensajeError", e.getMessage());
         return "error";
     }
 
     @ExceptionHandler(TiempoExcedidoException.class)
     public String handleTiempoExcedido(TiempoExcedidoException e, Model model) {
-        model.addAttribute("error", e.getMessage());
+        model.addAttribute("mensajeError", e.getMessage());
         return "error";
     }
 
     @ExceptionHandler(RepartidorNoDisponibleException.class)
     public String handleRepartidorNoDisponible(
             RepartidorNoDisponibleException e, Model model) {
-        model.addAttribute("error", e.getMessage());
+        model.addAttribute("mensajeError", e.getMessage());
         return "error";
     }
 }
