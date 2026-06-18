@@ -1,10 +1,12 @@
 package com.salesianostriana.FoodDelivery_Manager.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Entrega {
 
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,10 +39,21 @@ public class Entrega {
     @Positive(message = "El tiempo debe ser positivo")
     private Integer tiempo;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "repartidor_id")
     private Repartidor repartidor;
 
    @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
-    private List<EntregaPedido> entregaPedidos;
+    private List<EntregaPedido> entregaPedidos=new ArrayList<>();
+
+    public void addEntregaPedido(EntregaPedido ep) {
+        entregaPedidos.add(ep);
+        ep.setEntrega(this);
+    }
+
+    public void removeEntregaPedido(EntregaPedido ep) {
+        entregaPedidos.remove(ep);
+        ep.setEntrega(null);
+    }
+
 }
