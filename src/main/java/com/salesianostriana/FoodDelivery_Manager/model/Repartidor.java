@@ -1,10 +1,12 @@
 package com.salesianostriana.FoodDelivery_Manager.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.salesianostriana.FoodDelivery_Manager.usuario.User;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -34,7 +36,16 @@ public class Repartidor extends User{
     @NotBlank(message="la zona es obligatoria")
     private String zona;
 
-    @OneToMany(mappedBy = "repartidor")
-    private List<Entrega> entregas;
+    @OneToMany(mappedBy = "repartidor", fetch = FetchType.EAGER)
+    private List<Entrega> entregas=new ArrayList<>();
+
+    public void addEntrega(Entrega e) {
+        entregas.add(e);
+        e.setRepartidor(this);
+    }
+    public void removeEntrega(Entrega e) {
+        entregas.remove(e);
+        e.setRepartidor(null);
+    }
 
 }
