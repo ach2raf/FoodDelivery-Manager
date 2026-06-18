@@ -11,6 +11,7 @@ import com.salesianostriana.FoodDelivery_Manager.exception.RepartidorNoDisponibl
 import com.salesianostriana.FoodDelivery_Manager.exception.TiempoExcedidoException;
 import com.salesianostriana.FoodDelivery_Manager.model.Entrega;
 import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
+import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedidoPK;
 import com.salesianostriana.FoodDelivery_Manager.model.EstadoPedido;
 import com.salesianostriana.FoodDelivery_Manager.model.Pedido;
 import com.salesianostriana.FoodDelivery_Manager.model.Repartidor;
@@ -28,6 +29,7 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
     private final EntregaRepository entregaRepository;
     private final PedidoRepository pedidoRepository;
     private final EntregaPedidoRepository entregaPedidoRepository;
+    
 
     @Override
     public Entrega save(Entrega entrega) {
@@ -144,9 +146,12 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         }
     }
 
-    public void marcarComoEntregado(Long entregaPedidoId) {
-        EntregaPedido ep = entregaPedidoRepository.findById(entregaPedidoId)
-                .orElseThrow(() -> new RuntimeException("Asignación de pedido no encontrada"));
+    public void marcarComoEntregado(Long entrega_id, Long pedido_id) {
+
+        EntregaPedidoPK pk = new EntregaPedidoPK(entrega_id, pedido_id);
+
+        EntregaPedido ep = entregaPedidoRepository.findById(pk)
+            .orElseThrow(() -> new RuntimeException("Asignación de pedido no encontrada"));
 
         ep.setEstado(EstadoPedido.ENTREGADO);
         entregaPedidoRepository.save(ep);

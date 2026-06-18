@@ -1,13 +1,12 @@
 package com.salesianostriana.FoodDelivery_Manager.model;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EntregaPedido {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private EntregaPedidoPK entregaPedidoPK = new EntregaPedidoPK();
 
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado = EstadoPedido.PENDIENTE;
@@ -30,10 +28,22 @@ public class EntregaPedido {
     private Integer prioridad;
 
     @ManyToOne
-    @JoinColumn(name = "entrega_id")
+    @MapsId("entrega_id")
+    @JoinColumn(name = "entrega_id", insertable = false, updatable = false)
     private Entrega entrega;
 
     @ManyToOne
-    @JoinColumn(name = "pedido_id")
+    @MapsId("pedido_id")
+    @JoinColumn(name = "pedido_id", insertable = false, updatable = false)
     private Pedido pedido;
+
+    public void addToEntrega(Entrega e) {
+        e.getEntregaPedidos().add(this);
+        this.entrega = e;
+    }
+
+    public void removeFromEntrega(Entrega e) {
+        e.getEntregaPedidos().remove(this);
+        this.entrega = null;
+    }
 }
