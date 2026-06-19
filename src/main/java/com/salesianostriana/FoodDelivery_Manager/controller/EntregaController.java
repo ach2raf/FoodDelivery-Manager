@@ -104,9 +104,9 @@ public class EntregaController {
         return "redirect:/entregas";
     }
 
-    @GetMapping("/completarPedido/{entregaPedidoId}")
-    public String completarPedido(@PathVariable Long entregaPedidoId) {
-        entregaService.marcarComoEntregado(entregaPedidoId);
+    @GetMapping("/completarPedido/{entrega_id}/{pedido_id}")
+    public String completarPedido(@PathVariable Long entrega_id, @PathVariable Long pedido_id) {
+        entregaService.marcarComoEntregado(entrega_id, pedido_id);
         return "redirect:/entregas";
     }
 

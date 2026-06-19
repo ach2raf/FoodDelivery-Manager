@@ -20,4 +20,17 @@ public interface EntregaRepository extends JpaRepository<Entrega, Long> {
     List<Repartidor> findRepartidoresActivos();
 
     List<Entrega> findByTiempoLessThan(Integer minutos);
+
+    @Query("SELECT e FROM Entrega e WHERE e.repartidor.id = :repartidorId " +
+            "AND (:entregaId IS NULL OR e.id <> :entregaId) " +
+            "AND e.fecha < :finNueva " +
+            "AND FUNCTION('TIMESTAMPADD', MINUTE, e.tiempo, e.fecha) > :inicioNueva")
+    List<Entrega> findSolapamientos(Long repartidorId, Long entregaId,
+            LocalDateTime inicioNueva, LocalDateTime finNueva);
+
+    @Query("SELECT e.repartidor, COUNT(e) as totalEntregas FROM Entrega e " +
+            "WHERE e.repartidor IS NOT NULL " +
+            "GROUP BY e.repartidor " +
+            "ORDER BY COUNT(e) DESC")
+    List<Object[]> findRepartidoresOrdenadosPorEntregas();
 }

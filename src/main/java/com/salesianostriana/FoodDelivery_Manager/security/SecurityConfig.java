@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .requestMatchers("/pedidos/editarPedido/**", "/pedidos/borrarPedido/**").hasRole("ADMIN")
                         .requestMatchers("/entregas/editarEntrega/**", "/entregas/borrarEntrega/**").hasRole("ADMIN")
+                        .requestMatchers("/consultas/**").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/operador/**").hasRole("OPERADOR")
                         .anyRequest().authenticated())

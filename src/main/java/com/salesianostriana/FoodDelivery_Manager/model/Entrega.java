@@ -1,7 +1,6 @@
 package com.salesianostriana.FoodDelivery_Manager.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -44,16 +43,5 @@ public class Entrega {
     private Repartidor repartidor;
 
    @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
-    private List<EntregaPedido> entregaPedidos=new ArrayList<>();
-
-    public void addEntregaPedido(EntregaPedido ep) {
-        entregaPedidos.add(ep);
-        ep.setEntrega(this);
-    }
-
-    public void removeEntregaPedido(EntregaPedido ep) {
-        entregaPedidos.remove(ep);
-        ep.setEntrega(null);
-    }
-
+    private List<EntregaPedido> entregaPedidos;
 }
