@@ -2,7 +2,9 @@ package com.salesianostriana.FoodDelivery_Manager.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -152,6 +154,28 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
 
         ep.setEstado(EstadoPedido.ENTREGADO);
         entregaPedidoRepository.save(ep);
+    }
+
+    public Double obtenerCosteMedio() {
+        return entregaPedidoRepository.findAll().stream()
+                .mapToDouble(ep -> ep.getCoste() != null ? ep.getCoste() : 0.0)
+                .average()
+                .orElse(0.0);
+    }
+
+    public Map.Entry<Repartidor, Double> obtenerRepartidorMasIngresos() {
+        return entregaPedidoRepository.findAll().stream()
+                .filter(ep -> ep.getEntrega() != null
+                        && ep.getEntrega().getRepartidor() != null
+                        && ep.getCoste() != null)
+
+                .collect(Collectors.groupingBy(
+                        ep -> ep.getEntrega().getRepartidor(),
+                        Collectors.summingDouble(EntregaPedido::getCoste)))
+
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElse(null);
     }
 
 }
