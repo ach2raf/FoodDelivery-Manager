@@ -26,4 +26,6 @@ public class GlobalExceptionHandler {
         model.addAttribute("mensajeError", e.getMessage());
         return "error";
     }
+
+    
 }
