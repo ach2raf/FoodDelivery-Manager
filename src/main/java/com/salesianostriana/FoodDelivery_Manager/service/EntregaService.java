@@ -11,6 +11,7 @@ import com.salesianostriana.FoodDelivery_Manager.exception.RepartidorNoDisponibl
 import com.salesianostriana.FoodDelivery_Manager.exception.TiempoExcedidoException;
 import com.salesianostriana.FoodDelivery_Manager.model.Entrega;
 import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
+import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedidoPK;
 import com.salesianostriana.FoodDelivery_Manager.model.EstadoPedido;
 import com.salesianostriana.FoodDelivery_Manager.model.Pedido;
 import com.salesianostriana.FoodDelivery_Manager.model.Repartidor;
@@ -104,16 +105,14 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         LocalDateTime inicioNueva = nueva.getFecha();
         LocalDateTime finNueva = nueva.getFecha().plusMinutes(nueva.getTiempo());
 
-        return entregaRepository.findAll().stream()
-                .filter(e -> e.getRepartidor() != null)
-                .filter(e -> e.getRepartidor().getId()
-                        .equals(nueva.getRepartidor().getId()))
-                .filter(e -> nueva.getId() == null || !e.getId().equals(nueva.getId()))
-                .anyMatch(e -> {
-                    LocalDateTime ini = e.getFecha();
-                    LocalDateTime fin = e.getFecha().plusMinutes(e.getTiempo());
-                    return inicioNueva.isBefore(fin) && finNueva.isAfter(ini);
-                });
+        List<Entrega> solapadas = entregaRepository.findSolapamientos(
+                nueva.getRepartidor().getId(), nueva.getId(), inicioNueva, finNueva);
+
+        return !solapadas.isEmpty();
+    }
+
+    public List<Object[]> findRankingRepartidores() {
+        return entregaRepository.findRepartidoresOrdenadosPorEntregas();
     }
 
     private Double calcularCoste(Pedido pedido, Repartidor repartidor) {
@@ -144,8 +143,11 @@ public class EntregaService extends BaseServiceImpl<Entrega, Long, EntregaReposi
         }
     }
 
-    public void marcarComoEntregado(Long entregaPedidoId) {
-        EntregaPedido ep = entregaPedidoRepository.findById(entregaPedidoId)
+    public void marcarComoEntregado(Long entrega_id, Long pedido_id) {
+
+        EntregaPedidoPK pk = new EntregaPedidoPK(entrega_id, pedido_id);
+
+        EntregaPedido ep = entregaPedidoRepository.findById(pk)
                 .orElseThrow(() -> new RuntimeException("Asignación de pedido no encontrada"));
 
         ep.setEstado(EstadoPedido.ENTREGADO);

@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedido;
+import com.salesianostriana.FoodDelivery_Manager.model.EntregaPedidoPK;
 import com.salesianostriana.FoodDelivery_Manager.model.Pedido;
 
 
 @Repository
-public interface EntregaPedidoRepository extends JpaRepository<EntregaPedido, Long>{
+public interface EntregaPedidoRepository extends JpaRepository<EntregaPedido, EntregaPedidoPK>{
 
     @Query("SELECT ep.pedido FROM EntregaPedido ep")
     List<Pedido> findPedidosAsignados();

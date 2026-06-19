@@ -50,4 +50,11 @@ public class ConsultaController {
             entregaService.findEntregasRapidas());
         return "consultas/entregasRapidas";
     }
+
+    @GetMapping("/rankingRepartidores")
+    public String rankinRepartidors(Model model) {
+        model.addAttribute("entregas",
+            entregaService.findRankingRepartidores());
+        return "consultas/rankingRepartidores";
+    }
 }
